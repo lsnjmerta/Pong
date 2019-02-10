@@ -47,14 +47,14 @@ int main(int argc, char* argv[]) {
 
     Init(&ren,&win);
 
-int main() {
-    
-    cout << " Starting pong ! " << endl;
-    bool running = true;
-    int options;
+    // Check for controller support
+    if (SDL_NumJoysticks() == 1 && SDL_IsGameController(0)) {
+        controller = SDL_GameControllerOpen(0);
+        cout << "Found a controller: " << SDL_GameControllerName(controller) << endl;
 
-    if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
-        logError("Failed to initialize SDL");
+        haptic = SDL_HapticOpen(0);
+
+        SDL_HapticRumbleInit(haptic);
     }
 
 
