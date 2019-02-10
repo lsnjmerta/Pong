@@ -117,7 +117,7 @@ int main(int argc, char* argv[]) {
     int frames = 0;
     float fps;
     char buffer[512];
-    const Uint8 *keystates = SDL_GetKeyboardState(nullptr);
+    const Uint8 *keystates = SDL_GetKeyboardState(NULL);
     int mode = 1;
 
     while(!running) {
