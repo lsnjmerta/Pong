@@ -8,12 +8,13 @@
 #include <math.h>
 
 #include <SDL2/SDL.h>
-using namespace std;
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
 #include "pong.hpp"
 #include "util.hpp"
+
+using namespace std;
 
 typedef struct {
     float x;
