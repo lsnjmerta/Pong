@@ -44,6 +44,8 @@ int main(int argc, char *argv[]) {
 
     InitSDL(&ren, &win);
     int mode = getChoosenOption();
+    cout << "Selected mode " << mode;
+
     SDL_RenderClear(ren);
     defineFields(mode, board_width, board_height, table, net, racket, whiteColor,
                  b_rect, p1, p2, b, prevTime, running,
