@@ -39,7 +39,7 @@ bool runGame(float fps, int mode, SDL_Event& e, const Uint8 *keystates, player& 
             p2.pos.y += p2.speed;
         }
     } else {
-        // 2 players setup
+        // 2 players movement setup
 
         if(keystates[SDL_SCANCODE_UP])
             p2.pos.y -= p1.speed;
@@ -96,7 +96,7 @@ bool runGame(float fps, int mode, SDL_Event& e, const Uint8 *keystates, player& 
     if(p2.pos.y < 0) p2.pos.y = 0;
     if(p2.pos.y + p2.pos.h > HEIGHT) p2.pos.y = HEIGHT - p2.pos.h;
 
-    // Update the rect structure
+    // Update the ball rect structure
     b_rect.x = (int) b.x;
     b_rect.y = (int) b.y;
 
