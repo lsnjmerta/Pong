@@ -1,14 +1,38 @@
+//
+// Created by Jakub Merta on 2019-02-10.
+//
+
+#include <stdio.h>
+#include <stdlib.h>
 #include <iostream>
+#include <math.h>
+
 #include <SDL2/SDL.h>
 using namespace std;
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
+#include "pong.hpp"
+#include "util.hpp"
 
-const int WIDTH = 640;
-const int HEIGHT = 480;
+typedef struct {
+    float x;
+    float y;
+    float vx;
+    float vy;
+    float speed;
+} ball;
 
-void logError(const string &msg) {
-    cerr << msg << SDL_GetError() << endl;
-    exit(-1);
+typedef struct {
+    SDL_Rect pos;
+    int score;
+    int speed;
+} player;
+
+float calc_angle(float y1, float y2, int height) {
+    float rely = y1 + height/2 - y2;
+    rely /= height/2.0;   // Normalise
+    return rely * MAX_ANGLE;
 }
 
 SDL_Texture* loadTexture(const string &path, SDL_Renderer *ren){
