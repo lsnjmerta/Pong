@@ -12,7 +12,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-bool runGame(float fps, int mode, SDL_Event& e, uint prevTime, const Uint8 *keystates, player& p1, player& p2, ball& b, SDL_Texture *squareTex, SDL_Rect& b_rect, char buffer[], SDL_Color whiteColor){
+bool runGame(float fps, int mode, SDL_Event& e, const Uint8 *keystates, player& p1, player& p2, ball& b, SDL_Texture *squareTex, SDL_Rect& b_rect, char buffer[], SDL_Color whiteColor, SDL_Texture *net){
 
     while(SDL_PollEvent(&e)) {
         if(e.type == SDL_QUIT)  return false;
@@ -129,11 +129,11 @@ bool runGame(float fps, int mode, SDL_Event& e, uint prevTime, const Uint8 *keys
     SDL_RenderCopy(ren, squareTex, NULL, &p1.pos);
     SDL_RenderCopy(ren, squareTex, NULL, &p2.pos);
 
-    // Render center line
-    renderTexture(squareTex, ren, WIDTH/2 - CENTER/2, 0, CENTER, HEIGHT);
+    // Render net
+    renderTexture(net, ren, WIDTH/2 - CENTER/2, 0, CENTER, HEIGHT);
 
     // Render  Ball
-    renderTexture(squareTex, ren, b.x, b.y, BALL_WIDTH, BALL_HEIGHT);
+    renderTexture(net, ren, b.x, b.y, BALL_WIDTH, BALL_HEIGHT);
 
     // Display the score
     sprintf(buffer, "%d", p1.score);
