@@ -237,7 +237,7 @@ int main(int argc, char* argv[]) {
         SDL_RenderCopy(ren, squareTex, NULL, &p2.pos);
 
         // Render center line
-        renderTexture(squareTex, ren, WIDTH/2 - WIDTH/2, 0, WIDTH, HEIGHT);
+        renderTexture(squareTex, ren, WIDTH/2 - CENTER/2, 0, CENTER, HEIGHT);
 
         // Render  Ball
         renderTexture(squareTex, ren, b.x, b.y, BALL_WIDTH, BALL_HEIGHT);
