@@ -21,9 +21,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
-
     SDL_Event e;
-
     InitSDL(&ren, &win);
 
     int mode = getChoosenOption();
@@ -33,8 +31,13 @@ int main(int argc, char* argv[]) {
 
     int board_width;
     int board_height;
-    SDL_Texture *squareTex = IMG_LoadTexture(ren, "images/pong_board.png");
-    SDL_QueryTexture(squareTex, NULL, NULL, &board_width, &board_height);
+
+    SDL_Texture *table = IMG_LoadTexture(ren, "images/table.png");
+    SDL_Texture *net = IMG_LoadTexture(ren, "images/net.png");
+
+    SDL_Texture *racket = IMG_LoadTexture(ren, "images/racket.png");
+    SDL_QueryTexture(racket, NULL, NULL, &board_width, &board_height);
+
 
     SDL_Color whiteColor = {255, 255, 255};
 
@@ -88,10 +91,12 @@ int main(int argc, char* argv[]) {
             prevTime = currTime;
         }
 
-        running = runGame(fps, mode, e, prevTime, keystates, p1, p2, b, squareTex, b_rect, buffer, whiteColor);
+        running = runGame(fps, mode, e, keystates, p1, p2, b, racket, b_rect, buffer, whiteColor, net);
     }
 
-    SDL_DestroyTexture(squareTex);
+    SDL_DestroyTexture(racket);
+    SDL_DestroyTexture(net);
+    SDL_DestroyTexture(table);
     ClearAll(&ren, &win);
     return 0;
 }
@@ -110,6 +115,7 @@ void InitSDL(SDL_Renderer **ren, SDL_Window **win) {
         logError("Failed to create SDL Window");
 
     *ren = SDL_CreateRenderer(*win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
     if(*ren == nullptr)
         logError("Failed to create SDL Renderer");
 
