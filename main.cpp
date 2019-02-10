@@ -128,6 +128,16 @@ int main(int argc, char* argv[]) {
             frames = 0;
             prevTime = currTime;
         }
+        while(SDL_PollEvent(&e)) {
+            if(e.type == SDL_QUIT)  running = true;
+            if(e.type == SDL_KEYDOWN) {
+                switch(e.key.keysym.scancode) {
+                    case SDL_SCANCODE_ESCAPE:
+                        running = true;
+                        break;
+                }
+            }
+        }
     }
 
     return 0;
