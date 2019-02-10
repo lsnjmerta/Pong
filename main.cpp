@@ -60,24 +60,6 @@ int main(int argc, char* argv[]) {
 
     int board_width;
     int board_height;
-    SDL_Texture *squareTex = IMG_LoadTexture(ren, "../images/pong_board.png");
-    SDL_QueryTexture(squareTex, nullptr, nullptr, &board_width, &board_height);
-
-    while (running){
-        switch(options){
-            case 1:
-                // solo
-                break;
-            case 2:
-                // 2 players
-                break;
-
-            case 3:
-                // quit
-                break;
-
-                defaut:
-                    break;
     SDL_Texture *squareTex = IMG_LoadTexture(ren, "images/pong_board.png");
     SDL_QueryTexture(squareTex, NULL, NULL, &board_width, &board_height);
 
