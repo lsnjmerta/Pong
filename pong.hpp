@@ -13,7 +13,7 @@ const int HEIGHT = 480;
 const int CENTER = 5;
 const float MAX_ANGLE = 3.142 /5.0;
 
-const float BALL_MAXSPEED = 8f;
+const float BALL_MAXSPEED = 8.0f;
 const float BALL_ACCELERATE = 1.05f;
 const float BALL_INIT_SPEED = 4.0f;
 const int BALL_WIDTH = 10;
