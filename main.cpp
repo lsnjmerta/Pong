@@ -114,6 +114,7 @@ int main(int argc, char* argv[]) {
             frames = 0;
             prevTime = currTime;
         }
+
         while(SDL_PollEvent(&e)) {
             if(e.type == SDL_QUIT)  running = true;
             if(e.type == SDL_KEYDOWN) {
@@ -124,6 +125,7 @@ int main(int argc, char* argv[]) {
                 }
             }
         }
+
         Uint8 upButton = 0;
         Uint8 downButton = 0;
 
@@ -147,6 +149,7 @@ int main(int argc, char* argv[]) {
                 p2.pos.y += p2.speed;
             }
         }
+
         if(b.vx > BALL_MAXSPEED)
             b.vx = BALL_MAXSPEED;
 
@@ -253,6 +256,7 @@ int main(int argc, char* argv[]) {
 
         SDL_DestroyTexture(p1score);
         SDL_DestroyTexture(p2score);
+
         // Print fps
         sprintf(buffer, "%.0f", fps);
         SDL_Texture *fpsCounter = renderText(buffer, "fonts/Raleway-ExtraBold.ttf", whiteColor, 20, ren);
