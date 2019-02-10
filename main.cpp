@@ -40,10 +40,11 @@ int main(int argc, char *argv[]) {
     float fps;
     char buffer[512];
     const Uint8 *keystates;
+    int mode;
     SDL_Event e;
 
     InitSDL(&ren, &win);
-    int mode = getChoosenOption();
+    mode = getChoosenOption();
     cout << "Selected mode " << mode;
 
     SDL_RenderClear(ren);
