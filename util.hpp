@@ -10,7 +10,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 #include <iostream>
-#include <pong.hpp>
+#include "pong.hpp"
 
 using namespace std;
 
