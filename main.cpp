@@ -162,6 +162,54 @@ int main(int argc, char* argv[]) {
                 p2.pos.y += p2.speed;
             }
         }
+        if(b.vx > BALL_MAXSPEED)
+            b.vx = BALL_MAXSPEED;
+
+        if(b.vy > BALL_MAXSPEED)
+            b.vy = BALL_MAXSPEED;
+
+        // Update ball position
+        b.x += b.vx;
+        b.y += b.vy;
+
+        // Boundary Collision
+        if(b.y < 0) {
+            b.y = 0;
+            b.vy *= -1;
+        }
+        if(b.y + BALL_HEIGHT >= HEIGHT) {
+            b.y = HEIGHT - BALL_HEIGHT - 1;
+            b.vy *= -1;
+        }
+
+        if(b.x < 0) {
+
+            if(haptic)
+                SDL_HapticRumblePlay(haptic, 0.7, 1000);
+
+            p2.score += 1;
+            b.x = p1.pos.x + p1.pos.w;
+            b.y = p1.pos.y + p1.pos.h/2;
+            b.vx = BALL_INIT_SPEED;
+            b.speed = BALL_INIT_SPEED;
+        }
+        if(b.x + BALL_WIDTH>= WIDTH) {
+
+            if(haptic)
+                SDL_HapticRumblePlay(haptic, 0.7, 1000);
+
+            p1.score += 1;
+            b.x = p2.pos.x - BALL_WIDTH;
+            b.y = p2.pos.y + p2.pos.h/2;
+            b.vx = -1 * BALL_INIT_SPEED;
+            b.speed = BALL_INIT_SPEED;
+        }
+
+        if(p1.pos.y < 0) p1.pos.y = 0;
+        if(p1.pos.y + p1.pos.h > HEIGHT) p1.pos.y = HEIGHT - p1.pos.h;
+        if(p2.pos.y < 0) p2.pos.y = 0;
+        if(p2.pos.y + p2.pos.h > HEIGHT) p2.pos.y = HEIGHT - p2.pos.h;
+
     }
 
     return 0;
