@@ -42,21 +42,8 @@ int main(int argc, char* argv[]) {
     SDL_Event e;
     SDL_Renderer *ren = nullptr;
     SDL_Window *win = nullptr;
-    SDL_GameController *controller = nullptr;
-
-    SDL_Haptic *haptic = nullptr;
 
     InitSDL(&ren, &win);
-
-    // Check for controller support
-    if (SDL_NumJoysticks() == 1 && SDL_IsGameController(0)) {
-        controller = SDL_GameControllerOpen(0);
-        cout << "Found a controller: " << SDL_GameControllerName(controller) << endl;
-
-        haptic = SDL_HapticOpen(0);
-
-        SDL_HapticRumbleInit(haptic);
-    }
 
     int board_width;
     int board_height;
@@ -126,18 +113,10 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        Uint8 upButton = 0;
-        Uint8 downButton = 0;
-
-        if(controller) {
-            downButton = SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-            upButton = SDL_GameControllerGetButton(controller, SDL_CONTROLLER_BUTTON_DPAD_UP);
-        }
-
         // Player Movement
-        if(keystates[SDL_SCANCODE_UP] || upButton)
+        if(keystates[SDL_SCANCODE_UP])
             p1.pos.y -= p1.speed;
-        if(keystates[SDL_SCANCODE_DOWN] || downButton)
+        if(keystates[SDL_SCANCODE_DOWN])
             p1.pos.y += p1.speed;
 
         if ( mode == 1) {
@@ -172,9 +151,6 @@ int main(int argc, char* argv[]) {
 
         if(b.x < 0) {
 
-            if(haptic)
-                SDL_HapticRumblePlay(haptic, 0.7, 1000);
-
             p2.score += 1;
             b.x = p1.pos.x + p1.pos.w;
             b.y = p1.pos.y + p1.pos.h/2;
@@ -183,8 +159,6 @@ int main(int argc, char* argv[]) {
         }
         if(b.x + BALL_WIDTH>= WIDTH) {
 
-            if(haptic)
-                SDL_HapticRumblePlay(haptic, 0.7, 1000);
 
             p1.score += 1;
             b.x = p2.pos.x - BALL_WIDTH;
@@ -205,8 +179,6 @@ int main(int argc, char* argv[]) {
         // Player Collision
         if(SDL_HasIntersection(&p1.pos, &b_rect)) {
 
-            if(haptic)
-                SDL_HapticRumblePlay(haptic, 0.5, 200);
 
             b.x = p1.pos.x + p1.pos.w;
 
@@ -218,9 +190,6 @@ int main(int argc, char* argv[]) {
         }
 
         if(SDL_HasIntersection(&p2.pos, &b_rect)) {
-
-            if(haptic)
-                SDL_HapticRumblePlay(haptic, 0.5, 200);
 
             b.x = p2.pos.x - BALL_WIDTH;
 
@@ -266,11 +235,8 @@ int main(int argc, char* argv[]) {
         SDL_RenderPresent(ren);
     }
 
-    if(haptic)
-        SDL_HapticClose(haptic);
-
     SDL_DestroyTexture(squareTex);
-    ClearAll(&ren, &win, &controller);
+    ClearAll(&ren, &win);
     return 0;
 }
 
@@ -299,10 +265,9 @@ void InitSDL(SDL_Renderer **ren, SDL_Window **win) {
         logError("Failed to load TTF extension");
 }
 
-void ClearAll(SDL_Renderer **ren, SDL_Window **win, SDL_GameController **controller) {
+void ClearAll(SDL_Renderer **ren, SDL_Window **win) {
     SDL_DestroyRenderer(*ren);
     SDL_DestroyWindow(*win);
-    SDL_GameControllerClose(*controller);
 
     TTF_Quit();
     IMG_Quit();
