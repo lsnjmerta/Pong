@@ -108,6 +108,17 @@ int main(int argc, char* argv[]) {
 
     p1.pos.y = HEIGHT/2 - p1.pos.h/2;
     p2.pos.y = HEIGHT/2 - p2.pos.h/2;
+
+    uint prevTime = SDL_GetTicks();
+    bool running = false;
+    int frames = 0;
+    float fps;
+    char buffer[512];
+    const Uint8 *keystates = SDL_GetKeyboardState(nullptr);
+
+    while(!running) {
+
+
         }
     }
 
