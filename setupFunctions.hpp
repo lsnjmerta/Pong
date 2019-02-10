@@ -68,6 +68,9 @@ int getChoosenOption() {
                     active = false;
                     break;
                 }
+                default: {
+                    break;
+                }
             }
         }
     }
