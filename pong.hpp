@@ -29,5 +29,19 @@ int menuOption = 1;
 void InitSDL(SDL_Renderer **ren, SDL_Window **win);
 void ClearAll(SDL_Renderer **ren, SDL_Window **win);
 
+typedef struct {
+    float x;
+    float y;
+    float vx;
+    float vy;
+    float speed;
+} ball;
+
+typedef struct {
+    SDL_Rect pos;
+    int score;
+    float speed;
+} player;
+
 
 #endif //GRA_PONG_H
