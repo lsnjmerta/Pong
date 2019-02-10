@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
     b.y = HEIGHT / 2;
     b.speed = BALL_INIT_SPEED;
     b.vx = (rand() % 2 == 0)? BALL_INIT_SPEED : -1 * BALL_INIT_SPEED;
-    b.vy = -0.5f;
+    b.vy =  -0.5f;
 
     p1.score = p2.score = 0;
     p1.pos.w = p2.pos.w = board_width;
@@ -189,7 +189,7 @@ int main(int argc, char* argv[]) {
             b.vy = ((b.vy>0)? -1 : 1) * b.speed * sin(angle);
         }
 
-        if(SDL_HasIntersection(&p2.pos, &b_rect)) {
+        if(mode == 1 && SDL_HasIntersection(&p2.pos, &b_rect)) {
 
             b.x = p2.pos.x - BALL_WIDTH;
 
