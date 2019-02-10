@@ -78,6 +78,9 @@ int main(int argc, char* argv[]) {
 
                 defaut:
                     break;
+    SDL_Texture *squareTex = IMG_LoadTexture(ren, "images/pong_board.png");
+    SDL_QueryTexture(squareTex, NULL, NULL, &board_width, &board_height);
+
     SDL_Color whiteColor = {255, 255, 255};
     SDL_Surface *fpsCounter;
 
