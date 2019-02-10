@@ -35,22 +35,17 @@ float calc_angle(float y1, float y2, int height) {
     return rely * MAX_ANGLE;
 }
 
-SDL_Texture* loadTexture(const string &path, SDL_Renderer *ren){
-    SDL_Texture *tex = nullptr;
-    SDL_Surface *bmp = SDL_LoadBMP(path.c_str());
+int main(int argc, char* argv[]) {
 
-    if (bmp != nullptr) {
-        tex = SDL_CreateTextureFromSurface(ren, bmp);
-        SDL_FreeSurface(bmp);
 
-        if (tex == nullptr) {
-            logError("Failed to create textures");
-        }
-    } else {
-        logError("Failed to load image");
-    }
-    return tex;
-}
+    SDL_Event e;
+    SDL_Renderer *ren = nullptr;
+    SDL_Window *win = nullptr;
+    SDL_GameController *controller = nullptr;
+
+    SDL_Haptic *haptic = nullptr;
+
+    Init(&ren,&win);
 
 int main() {
     
