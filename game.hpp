@@ -12,7 +12,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-bool runGame(float fps, int mode, SDL_Event& e, const Uint8 *keystates, player& p1, player& p2, ball& b, SDL_Texture *squareTex, SDL_Rect& b_rect, char buffer[], SDL_Color whiteColor, SDL_Texture *net){
+bool runGame(float fps, int mode, SDL_Event& e, const Uint8 *keystates, player& firstPlayer, player& secondPlayer, ball& ball, SDL_Texture *squareTex, SDL_Rect& b_rect, char buffer[], SDL_Color whiteColor, SDL_Texture *net){
 
     while(SDL_PollEvent(&e)) {
         if(e.type == SDL_QUIT)  return false;
@@ -27,118 +27,118 @@ bool runGame(float fps, int mode, SDL_Event& e, const Uint8 *keystates, player& 
     if (mode == 1){
         // Player Movement
         if(keystates[SDL_SCANCODE_UP] | keystates[SDL_SCANCODE_W])
-            p1.pos.y -= p1.speed;
+            firstPlayer.pos.y -= firstPlayer.speed;
         if(keystates[SDL_SCANCODE_DOWN] | keystates[SDL_SCANCODE_S])
-            p1.pos.y += p1.speed;
+            firstPlayer.pos.y += firstPlayer.speed;
 
         // Basic AI
-        if (b.y < p2.pos.y + p2.pos.h / 2) {
-            p2.pos.y -= p2.speed;
+        if (ball.y < secondPlayer.pos.y + secondPlayer.pos.h / 2) {
+            secondPlayer.pos.y -= secondPlayer.speed;
         }
-        if (b.y > p2.pos.y + p2.pos.h / 2) {
-            p2.pos.y += p2.speed;
+        if (ball.y > secondPlayer.pos.y + secondPlayer.pos.h / 2) {
+            secondPlayer.pos.y += secondPlayer.speed;
         }
     } else {
         // 2 players movement setup
 
         if(keystates[SDL_SCANCODE_UP])
-            p2.pos.y -= p1.speed;
+            secondPlayer.pos.y -= firstPlayer.speed;
         if(keystates[SDL_SCANCODE_DOWN])
-            p2.pos.y += p1.speed;
+            secondPlayer.pos.y += firstPlayer.speed;
 
         if (keystates[SDL_SCANCODE_W]){
-            p1.pos.y -= p1.speed;
+            firstPlayer.pos.y -= firstPlayer.speed;
         }
         if (keystates[SDL_SCANCODE_S]) {
-            p1.pos.y += p1.speed;
+            firstPlayer.pos.y += firstPlayer.speed;
         }
 
     }
 
-    if(b.vx > BALL_MAXSPEED)
-        b.vx = BALL_MAXSPEED;
+    if(ball.vx > BALL_MAXSPEED)
+        ball.vx = BALL_MAXSPEED;
 
-    if(b.vy > BALL_MAXSPEED)
-        b.vy = BALL_MAXSPEED;
+    if(ball.vy > BALL_MAXSPEED)
+        ball.vy = BALL_MAXSPEED;
 
     // Update ball position
-    b.x += b.vx;
-    b.y += b.vy;
+    ball.x += ball.vx;
+    ball.y += ball.vy;
 
     // Boundary Collision
-    if(b.y < 0) {
-        b.y = 0;
-        b.vy *= -1;
+    if(ball.y < 0) {
+        ball.y = 0;
+        ball.vy *= -1;
     }
-    if(b.y + BALL_HEIGHT >= HEIGHT) {
-        b.y = HEIGHT - BALL_HEIGHT - 1;
-        b.vy *= -1;
-    }
-
-    if(b.x < 0) {
-
-        p2.score += 1;
-        b.x = p1.pos.x + p1.pos.w;
-        b.y = p1.pos.y + p1.pos.h/2;
-        b.vx = BALL_INIT_SPEED;
-        b.speed = BALL_INIT_SPEED;
-    }
-    if(b.x + BALL_WIDTH>= WIDTH) {
-        p1.score += 1;
-        b.x = p2.pos.x - BALL_WIDTH;
-        b.y = p2.pos.y + p2.pos.h/2;
-        b.vx = -1 * BALL_INIT_SPEED;
-        b.speed = BALL_INIT_SPEED;
+    if(ball.y + BALL_HEIGHT >= HEIGHT) {
+        ball.y = HEIGHT - BALL_HEIGHT - 1;
+        ball.vy *= -1;
     }
 
-    if(p1.pos.y < 0) p1.pos.y = 0;
-    if(p1.pos.y + p1.pos.h > HEIGHT) p1.pos.y = HEIGHT - p1.pos.h;
-    if(p2.pos.y < 0) p2.pos.y = 0;
-    if(p2.pos.y + p2.pos.h > HEIGHT) p2.pos.y = HEIGHT - p2.pos.h;
+    if(ball.x < 0) {
+
+        secondPlayer.score += 1;
+        ball.x = firstPlayer.pos.x + firstPlayer.pos.w;
+        ball.y = firstPlayer.pos.y + firstPlayer.pos.h/2;
+        ball.vx = BALL_INIT_SPEED;
+        ball.speed = BALL_INIT_SPEED;
+    }
+    if(ball.x + BALL_WIDTH>= WIDTH) {
+        firstPlayer.score += 1;
+        ball.x = secondPlayer.pos.x - BALL_WIDTH;
+        ball.y = secondPlayer.pos.y + secondPlayer.pos.h/2;
+        ball.vx = -1 * BALL_INIT_SPEED;
+        ball.speed = BALL_INIT_SPEED;
+    }
+
+    if(firstPlayer.pos.y < 0) firstPlayer.pos.y = 0;
+    if(firstPlayer.pos.y + firstPlayer.pos.h > HEIGHT) firstPlayer.pos.y = HEIGHT - firstPlayer.pos.h;
+    if(secondPlayer.pos.y < 0) secondPlayer.pos.y = 0;
+    if(secondPlayer.pos.y + secondPlayer.pos.h > HEIGHT) secondPlayer.pos.y = HEIGHT - secondPlayer.pos.h;
 
     // Update the ball rect structure
-    b_rect.x = (int) b.x;
-    b_rect.y = (int) b.y;
+    b_rect.x = (int) ball.x;
+    b_rect.y = (int) ball.y;
 
     // Collisions
-    if(SDL_HasIntersection(&p1.pos, &b_rect)) {
+    if(SDL_HasIntersection(&firstPlayer.pos, &b_rect)) {
 
 
-        b.x = p1.pos.x + p1.pos.w;
+        ball.x = firstPlayer.pos.x + firstPlayer.pos.w;
 
-        b.speed = b.speed * BALL_ACCELERATE;
+        ball.speed = ball.speed * BALL_ACCELERATE;
 
-        float angle = calc_angle(p1.pos.y, b.y, p1.pos.h);
-        b.vx = b.speed * cos(angle);
-        b.vy = ((b.vy>0)? -1 : 1) * b.speed * sin(angle);
+        float angle = calc_angle(firstPlayer.pos.y, ball.y, firstPlayer.pos.h);
+        ball.vx = ball.speed * cos(angle);
+        ball.vy = ((ball.vy>0)? -1 : 1) * ball.speed * sin(angle);
     }
 
-    if(SDL_HasIntersection(&p2.pos, &b_rect)) {
+    if(SDL_HasIntersection(&secondPlayer.pos, &b_rect)) {
 
-        b.x = p2.pos.x - BALL_WIDTH;
+        ball.x = secondPlayer.pos.x - BALL_WIDTH;
 
-        b.speed = b.speed * BALL_ACCELERATE;
+        ball.speed = ball.speed * BALL_ACCELERATE;
 
-        float angle = calc_angle(p2.pos.y, b.y, p2.pos.h);
-        b.vx = -1 * b.speed * cos(angle);
-        b.vy = ((b.vy > 0) ? -1 : 1) * b.speed * sin(angle);
+        float angle = calc_angle(secondPlayer.pos.y, ball.y, secondPlayer.pos.h);
+        ball.vx = -1 * ball.speed * cos(angle);
+        ball.vy = ((ball.vy > 0) ? -1 : 1) * ball.speed * sin(angle);
     }
 
     SDL_RenderClear(ren);
 
-    SDL_RenderCopy(ren, squareTex, NULL, &p1.pos);
-    SDL_RenderCopy(ren, squareTex, NULL, &p2.pos);
+    SDL_RenderCopy(ren, squareTex, NULL, &firstPlayer.pos);
+    SDL_RenderCopy(ren, squareTex, NULL, &secondPlayer.pos);
 
     // Render net
     renderTexture(net, ren, WIDTH/2 - CENTER/2, 0, CENTER, HEIGHT);
 
     // Render  Ball
-    renderTexture(net, ren, b.x, b.y, BALL_WIDTH, BALL_HEIGHT);
+    renderTexture(net, ren, ball.x, ball.y, BALL_WIDTH, BALL_HEIGHT);
 
     // Display the score
-    sprintf(buffer, "%d", p1.score);
+    sprintf(buffer, "%d", firstPlayer.score);
     SDL_Texture *p1score = renderText(buffer, "fonts/Raleway-ExtraBold.ttf", whiteColor, 40, ren);
-    sprintf(buffer, "%d", p2.score);
+    sprintf(buffer, "%d", secondPlayer.score);
     SDL_Texture *p2score = renderText(buffer, "fonts/Raleway-ExtraBold.ttf", whiteColor, 40, ren);
 
     int width;
