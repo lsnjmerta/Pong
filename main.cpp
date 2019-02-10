@@ -213,6 +213,64 @@ int main(int argc, char* argv[]) {
         if(p2.pos.y < 0) p2.pos.y = 0;
         if(p2.pos.y + p2.pos.h > HEIGHT) p2.pos.y = HEIGHT - p2.pos.h;
 
+        // Update the rect structure
+        b_rect.x = (int) b.x;
+        b_rect.y = (int) b.y;
+
+        // Player Collision
+        if(SDL_HasIntersection(&p1.pos, &b_rect)) {
+
+            if(haptic)
+                SDL_HapticRumblePlay(haptic, 0.5, 200);
+
+            b.x = p1.pos.x + p1.pos.w;
+
+            b.speed = b.speed * BALL_ACCELERATE;
+
+            float angle = calc_angle(p1.pos.y, b.y, p1.pos.h);
+            b.vx = b.speed * cos(angle);
+            b.vy = ((b.vy>0)? -1 : 1) * b.speed * sin(angle);
+        }
+
+        if(SDL_HasIntersection(&p2.pos, &b_rect)) {
+
+            if(haptic)
+                SDL_HapticRumblePlay(haptic, 0.5, 200);
+
+            b.x = p2.pos.x - BALL_WIDTH;
+
+            b.speed = b.speed * BALL_ACCELERATE;
+
+            float angle = calc_angle(p2.pos.y, b.y, p2.pos.h);
+            b.vx = -1 * b.speed * cos(angle);
+            b.vy = ((b.vy>0)? -1 : 1) * b.speed * sin(angle);
+        }
+
+        SDL_RenderClear(ren);
+
+        SDL_RenderCopy(ren, squareTex, NULL, &p1.pos);
+        SDL_RenderCopy(ren, squareTex, NULL, &p2.pos);
+
+        // Render center line
+        renderTexture(squareTex, ren, WIDTH/2 - WIDTH/2, 0, WIDTH, HEIGHT);
+
+        // Render  Ball
+        renderTexture(squareTex, ren, b.x, b.y, BALL_WIDTH, BALL_HEIGHT);
+
+        // Display the score
+        sprintf(buffer, "%d", p1.score);
+        SDL_Texture *p1score = renderText(buffer, "fonts/Raleway-ExtraBold.ttf", whiteColor, 40, ren);
+        sprintf(buffer, "%d", p2.score);
+        SDL_Texture *p2score = renderText(buffer, "fonts/Raleway-ExtraBold.ttf", whiteColor, 40, ren);
+
+        int width;
+        SDL_QueryTexture(p1score, NULL, NULL, &width, NULL);
+
+        renderTexture(p1score, ren, WIDTH/2 - width - 10, 10);
+        renderTexture(p2score, ren, WIDTH/2 + 10, 10);
+
+        SDL_DestroyTexture(p1score);
+        SDL_DestroyTexture(p2score);
     }
 
     return 0;
