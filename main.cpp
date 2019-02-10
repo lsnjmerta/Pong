@@ -271,7 +271,19 @@ int main(int argc, char* argv[]) {
 
         SDL_DestroyTexture(p1score);
         SDL_DestroyTexture(p2score);
+        // Print fps
+        sprintf(buffer, "%.0f", fps);
+        SDL_Texture *fpsCounter = renderText(buffer, "fonts/Raleway-ExtraBold.ttf", whiteColor, 20, ren);
+        renderTexture(fpsCounter, ren, WIDTH - 20, 0);
+        SDL_DestroyTexture(fpsCounter);
+
+        SDL_RenderPresent(ren);
     }
 
+    if(haptic)
+        SDL_HapticClose(haptic);
+
+    SDL_DestroyTexture(squareTex);
+    ClearAll(&ren, &win, &controller);
     return 0;
 }
