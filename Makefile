@@ -1,2 +1,4 @@
-game:
-	g++ main.cpp -o play -I include -L lib -l SDL2-2.0.0 -l SDL2_image -l SDL2_ttf
+all: pong
+
+pong: main.cpp util.hpp pong.hpp
+	g++ -O1 --std=c++11 main.cpp -lSDL2 -lSDL2_image -lSDL2_ttf -lm -o pong
