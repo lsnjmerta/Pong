@@ -19,6 +19,13 @@ const float BALL_INIT_SPEED = 4.0f;
 const int BALL_WIDTH = 10;
 const int BALL_HEIGHT = 10;
 
+SDL_Window *win = nullptr;
+SDL_Event event;
+SDL_Event mouse_event;
+SDL_Renderer *ren = nullptr;
+
+int menuOption = 1;
+
 void InitSDL(SDL_Renderer **ren, SDL_Window **win);
 void ClearAll(SDL_Renderer **ren, SDL_Window **win);
 
