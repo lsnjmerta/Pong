@@ -77,6 +77,29 @@ int main(int argc, char* argv[]) {
 
                 defaut:
                     break;
+    // Define Players
+    player p1;
+    player p2;
+
+    // Define Ball
+    ball b;
+    b.x = WIDTH / 2;
+    b.y = HEIGHT / 2;
+    b.speed = BALL_INIT_SPEED;
+    b.vx = (rand() % 2 == 0)? BALL_INIT_SPEED : -1 * BALL_INIT_SPEED;
+    b.vy = -0.5f;
+
+    p1.score = p2.score = 0;
+    p1.pos.w = p2.pos.w = board_width;
+    p1.pos.h = p2.pos.h = 150;
+    p1.speed = 10;
+    p2.speed = 3.5;
+
+    p1.pos.x = board_width/2 + 10;
+    p2.pos.x = WIDTH - p2.pos.w- 10 - p2.pos.w/2;
+
+    p1.pos.y = HEIGHT/2 - p1.pos.h/2;
+    p2.pos.y = HEIGHT/2 - p2.pos.h/2;
         }
     }
 
