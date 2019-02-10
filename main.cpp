@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
 
     SDL_Haptic *haptic = nullptr;
 
-    Init(&ren,&win);
+    InitSDL(&ren, &win);
 
     // Check for controller support
     if (SDL_NumJoysticks() == 1 && SDL_IsGameController(0)) {
