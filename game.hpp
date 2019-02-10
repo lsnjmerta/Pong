@@ -26,9 +26,9 @@ bool runGame(float fps, int mode, SDL_Event& e, const Uint8 *keystates, player& 
 
     if (mode == 1){
         // Player Movement
-        if(keystates[SDL_SCANCODE_UP])
+        if(keystates[SDL_SCANCODE_UP] | keystates[SDL_SCANCODE_W])
             p1.pos.y -= p1.speed;
-        if(keystates[SDL_SCANCODE_DOWN])
+        if(keystates[SDL_SCANCODE_DOWN] | keystates[SDL_SCANCODE_S])
             p1.pos.y += p1.speed;
 
         // Basic AI
