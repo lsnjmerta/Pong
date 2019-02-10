@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include "setupFunctions.hpp"
 
 #include "pong.hpp"
 #include "util.hpp"
@@ -27,7 +28,7 @@ typedef struct {
 typedef struct {
     SDL_Rect pos;
     int score;
-    int speed;
+    float speed;
 } player;
 
 float calc_angle(float y1, float y2, int height) {
@@ -40,10 +41,13 @@ int main(int argc, char* argv[]) {
 
 
     SDL_Event e;
-    SDL_Renderer *ren = nullptr;
-    SDL_Window *win = nullptr;
 
     InitSDL(&ren, &win);
+
+    int mode = getChoosenOption();
+    SDL_RenderClear(ren);
+
+    cout << menuOption;
 
     int board_width;
     int board_height;
@@ -51,7 +55,6 @@ int main(int argc, char* argv[]) {
     SDL_QueryTexture(squareTex, NULL, NULL, &board_width, &board_height);
 
     SDL_Color whiteColor = {255, 255, 255};
-    SDL_Surface *fpsCounter;
 
     SDL_Rect b_rect;
     b_rect.w = BALL_HEIGHT;
@@ -73,8 +76,11 @@ int main(int argc, char* argv[]) {
     p1.pos.w = p2.pos.w = board_width;
     p1.pos.h = p2.pos.h = 150;
     p1.speed = 10;
-    p2.speed = 3.5;
-
+    if (mode == 1) {
+        p2.speed = 3.5f;
+    } else {
+        p2.speed = 10;
+    }
     p1.pos.x = board_width/2 + 10;
     p2.pos.x = WIDTH - p2.pos.w- 10 - p2.pos.w/2;
 
@@ -87,9 +93,8 @@ int main(int argc, char* argv[]) {
     float fps;
     char buffer[512];
     const Uint8 *keystates = SDL_GetKeyboardState(NULL);
-    int mode = 1;
 
-    while(!running) {
+    while(!running && mode != 3) {
 
         // FPS Calculation
         ++frames;
@@ -113,13 +118,13 @@ int main(int argc, char* argv[]) {
             }
         }
 
+        if (mode == 1){
         // Player Movement
         if(keystates[SDL_SCANCODE_UP])
             p1.pos.y -= p1.speed;
         if(keystates[SDL_SCANCODE_DOWN])
             p1.pos.y += p1.speed;
 
-        if ( mode == 1) {
             // Basic AI
             if (b.y < p2.pos.y + p2.pos.h / 2) {
                 p2.pos.y -= p2.speed;
@@ -127,6 +132,21 @@ int main(int argc, char* argv[]) {
             if (b.y > p2.pos.y + p2.pos.h / 2) {
                 p2.pos.y += p2.speed;
             }
+        } else {
+          // 2 players setup
+
+            if(keystates[SDL_SCANCODE_UP])
+                p2.pos.y -= p1.speed;
+            if(keystates[SDL_SCANCODE_DOWN])
+                p2.pos.y += p1.speed;
+
+            if (keystates[SDL_SCANCODE_W]){
+                p1.pos.y -= p1.speed;
+            }
+            if (keystates[SDL_SCANCODE_S]) {
+                p1.pos.y += p1.speed;
+            }
+
         }
 
         if(b.vx > BALL_MAXSPEED)
@@ -158,8 +178,6 @@ int main(int argc, char* argv[]) {
             b.speed = BALL_INIT_SPEED;
         }
         if(b.x + BALL_WIDTH>= WIDTH) {
-
-
             p1.score += 1;
             b.x = p2.pos.x - BALL_WIDTH;
             b.y = p2.pos.y + p2.pos.h/2;
@@ -176,7 +194,7 @@ int main(int argc, char* argv[]) {
         b_rect.x = (int) b.x;
         b_rect.y = (int) b.y;
 
-        // Player Collision
+        // Collisions
         if(SDL_HasIntersection(&p1.pos, &b_rect)) {
 
 
@@ -189,7 +207,7 @@ int main(int argc, char* argv[]) {
             b.vy = ((b.vy>0)? -1 : 1) * b.speed * sin(angle);
         }
 
-        if(mode == 1 && SDL_HasIntersection(&p2.pos, &b_rect)) {
+        if(SDL_HasIntersection(&p2.pos, &b_rect)) {
 
             b.x = p2.pos.x - BALL_WIDTH;
 
@@ -197,7 +215,7 @@ int main(int argc, char* argv[]) {
 
             float angle = calc_angle(p2.pos.y, b.y, p2.pos.h);
             b.vx = -1 * b.speed * cos(angle);
-            b.vy = ((b.vy>0)? -1 : 1) * b.speed * sin(angle);
+            b.vy = ((b.vy > 0) ? -1 : 1) * b.speed * sin(angle);
         }
 
         SDL_RenderClear(ren);
