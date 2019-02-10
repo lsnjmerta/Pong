@@ -118,7 +118,15 @@ int main(int argc, char* argv[]) {
 
     while(!running) {
 
+        // FPS Calculation
+        ++frames;
+        uint currTime = SDL_GetTicks();
+        float elapsed = (currTime - prevTime);
 
+        if(elapsed > 100) {
+            fps = round(frames / (elapsed / 1000.0));
+            frames = 0;
+            prevTime = currTime;
         }
     }
 
