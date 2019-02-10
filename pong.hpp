@@ -19,7 +19,4 @@ const float BALL_INIT_SPEED = 4.0f;
 const int BALL_WIDTH = 10;
 const int BALL_HEIGHT = 10;
 
-void Init(SDL_Renderer **ren, SDL_Window *win);
-void ClearAll(SDL_Renderer **ren, SDL_Window **win, SDL_GameController **controller);
-
 #endif //GRA_PONG_H
