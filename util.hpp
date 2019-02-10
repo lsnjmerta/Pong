@@ -10,7 +10,6 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 #include <iostream>
-#include "pong.hpp"
 
 using namespace std;
 
@@ -59,39 +58,6 @@ void renderTexture(SDL_Texture *tex, SDL_Renderer *ren, int x, int y, int w=-1, 
     SDL_RenderCopy(ren, tex, nullptr, &dest);
 }
 
-void InitSDL(SDL_Renderer **ren, SDL_Window **win) {
-    if(SDL_Init(SDL_INIT_EVERYTHING) == -1)
-        logError("Failed to init SDL");
 
-    *win = SDL_CreateWindow(
-            "Pong",
-            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-            WIDTH, HEIGHT,
-            SDL_WINDOW_SHOWN
-    );
-    if(*win == nullptr)
-        logError("Failed to create SDL Window");
-
-    *ren = SDL_CreateRenderer(*win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if(*ren == nullptr)
-        logError("Failed to create SDL Renderer");
-
-    const int flags = IMG_INIT_PNG | IMG_INIT_JPG;
-    if(IMG_Init(flags) !=flags)
-        logError("Failed to load the Image loading extensions");
-
-    if(TTF_Init() != 0)
-        logError("Failed to load TTF extension");
-}
-
-void ClearAll(SDL_Renderer **ren, SDL_Window **win, SDL_GameController **controller) {
-    SDL_DestroyRenderer(*ren);
-    SDL_DestroyWindow(*win);
-    SDL_GameControllerClose(*controller);
-
-    TTF_Quit();
-    IMG_Quit();
-    SDL_Quit();
-}
 
 #endif //GRA_UTIL_H
