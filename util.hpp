@@ -18,6 +18,11 @@ void logError(const string &msg, ostream &os = cerr) {
     exit(-1);
 }
 
+float calc_angle(float y1, float y2, int height) {
+    float rely = y1 + height/2 - y2;
+    rely /= height/2.0;   // Normalise
+    return rely * MAX_ANGLE;
+}
 
 SDL_Texture *renderText(const std::string &msg, const std::string &fontPath, SDL_Color color, int fontSize, SDL_Renderer *ren) {
     TTF_Font *font = TTF_OpenFont(fontPath.c_str(), fontSize);
