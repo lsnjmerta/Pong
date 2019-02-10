@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
     b.x = WIDTH / 2;
     b.y = HEIGHT / 2;
     b.speed = BALL_INIT_SPEED;
-    b.vx = (rand() % 2 == 0)? BALL_INIT_SPEED : -1 * BALL_INIT_SPEED;
+    b.vx = (random() % 2 == 0)? BALL_INIT_SPEED : -1 * BALL_INIT_SPEED;
     b.vy =  -0.5f;
 
     p1.score = p2.score = 0;
