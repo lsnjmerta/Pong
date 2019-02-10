@@ -78,6 +78,13 @@ int main(int argc, char* argv[]) {
 
                 defaut:
                     break;
+    SDL_Color whiteColor = {255, 255, 255};
+    SDL_Surface *fpsCounter;
+
+    SDL_Rect b_rect;
+    b_rect.w = BALL_HEIGHT;
+    b_rect.h = BALL_HEIGHT;
+
     // Define Players
     player p1;
     player p2;
